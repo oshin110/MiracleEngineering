@@ -1,0 +1,31 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar section */
+#navbar-list a{
+    color: black;
+}
+
+.nav-link.active {
+    background-color: rgb(73, 68, 68); /* Replace with your desired color */
+    color: white;
+}
+
+/* main picture */
+.blur {
+    filter: blur(8px);
+}
+
+/* scrolable admin */
+.scrollable-div { 
+    height: 200px;
+    overflow-y: scroll; 
+}
