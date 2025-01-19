@@ -41,20 +41,70 @@
                                 @foreach ($proyek as $index => $data)
                                     <!-- Each project will be inside its own card -->
                                     <div class="col-12 col-sm-4 mb-3">
-                                        <div class="card h-100 text-center" style="border-radius: 15px">
-                                            <div class="card-body border border-success border-3" style="border-radius: 15px">
+                                        <div class="card h-100 text-center" style="border-radius: 15px;">
+                                            <div class="card-body border border-success border-3" style="border-radius: 15px;">
                                                 <div class="group-proyek">
-                                                    <h5>{{$data->nama_proyek}}</h5>
-                                                    <h6>Rp.{{number_format($data->harga_minimum, 0, ',', '.')}} - Rp.{{number_format($data->harga_maksimum, 0, ',', '.')}}</h6>
+                                                    <h5>{{ $data->nama_proyek }}</h5>
+                                                    <h6>Rp.{{ number_format($data->harga_minimum, 0, ',', '.') }} - Rp.{{ number_format($data->harga_maksimum, 0, ',', '.') }}</h6>
+                                                    <!-- Button to trigger modal -->
+                                                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#paymentModal-{{ $index }}">
+                                                        Bayar Sekarang
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Add a new row after every 3 images -->
+                                    <!-- Add a new row after every 3 items -->
                                     @if (($index + 1) % 3 == 0)
                                         </div><div class="row">
                                     @endif
+
+                                    <!-- Payment Modal -->
+                                    <div class="modal fade" id="paymentModal-{{ $index }}" tabindex="-1" aria-labelledby="paymentModalLabel-{{ $index }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="paymentModalLabel-{{ $index }}">Proses Pembayaran</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="/proses-pembayaran" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="proyek_id" value="{{ $data->id }}">
+                                                        <div class="mb-3">
+                                                            <label for="nama-{{ $index }}" class="form-label">Nama</label>
+                                                            <input type="text" class="form-control" id="nama-{{ $index }}" name="nama" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="alamat-{{ $index }}" class="form-label">Alamat</label>
+                                                            <textarea class="form-control" id="alamat-{{ $index }}" name="alamat" rows="3" required></textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="nomor_hp-{{ $index }}" class="form-label">Nomor HP</label>
+                                                            <input type="text" class="form-control" id="nomor_hp-{{ $index }}" name="nomor_hp" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Size</label>
+                                                            <div class="d-flex gap-2">
+                                                                @foreach (['S', 'M', 'L', 'XL'] as $size)
+                                                                    <div class="border p-2">
+                                                                        <input type="radio" class="btn-check" id="size-{{ $size }}-{{ $index }}" name="size" value="{{ $size }}" required>
+                                                                        <label class="btn btn-outline-secondary" for="size-{{ $size }}-{{ $index }}">{{ $size }}</label>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-primary">Lanjutkan</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
+
                             </div>
                         </div>
 
